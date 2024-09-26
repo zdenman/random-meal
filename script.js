@@ -40,13 +40,15 @@ recepty.forEach((recept) => {
 
 // Adding recipe on click----------------- + Enter
 function addRecipe() {
-  console.log(meal.value);
+  // console.log(meal.value);
   // Adding recipe to the recipe object
-  recipes[meal.value.trim()] = {
-    ingredients: []
+  const newRecipe = {
+    title: meal.value.trim(),
+    ingredients: [],
   }
+  recipes.push(newRecipe);
   // Showing random result on the page from recepty array
-  result.textContent = recepty[randomInt];
+  result.textContent = recipes[randomInt];
   // Adding meal from input to the array
   recepty.push(meal.value);
   // Clearing input field
