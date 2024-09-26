@@ -2,6 +2,7 @@ const meal = document.querySelector("#meal");
 const buttonSubmit = document.querySelector("#button-submit");
 const result = document.querySelector(".result");
 const mealList = document.querySelector(".meal-list");
+
 let recepty = [
   "Lazanje",
   "Cuketovy gulas",
@@ -30,12 +31,21 @@ const randomInt = getRandomIntInclusive(0, recepty.length);
 
 // List of meal
 recepty.forEach((recept) => {
-  console.log(recept);
+  //   console.log(recept);
+  const html = `<li>${recept}</li>`;
+  mealList.insertAdjacentHTML("beforeend", html);
 });
 
 buttonSubmit.addEventListener("click", (e) => {
   e.preventDefault();
   result.textContent = recepty[randomInt];
   recepty.push(meal.value);
+  mealList.innerHTML = "";
+
+  recepty.forEach((recept) => {
+    //   console.log(recept);
+    const html = `<li>${recept}</li>`;
+    mealList.insertAdjacentHTML("beforeend", html);
+  });
   console.log(recepty);
 });
