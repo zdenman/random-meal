@@ -84,7 +84,8 @@ function updateRecipeList() {
     // const html = `<li>${recipe.title}</li>
     // <p class="ingredients-container">${[...recipe.ingredients]}</p></br>`;
     // mealList.insertAdjacentHTML("beforeend", html);
-    const mealListSingleItem = document.createElement("li");
+    const mealListSingleItem = document.createElement("div");
+    mealListSingleItem.classList.add("meal-list-item");
     mealListSingleItem.textContent = recipe.title;
 
     const addIngredientButton = document.createElement("button");
