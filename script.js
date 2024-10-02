@@ -6,18 +6,71 @@ document.addEventListener("DOMContentLoaded", (e) => {
   let genJedlo = document.querySelector("#gen-jedlo");
   const source = document.querySelector("#sourceLink");
   const modal = document.getElementById("openModalBtn");
+  let recipe;
   let recipeHistory = [];
   let recipes = [
     {
       id: 1727425558221,
+      typ: "Obed",
       title: "Lazanje",
       ingredients: ["kory", "pretlak", "mletvo meso"],
+      how: "",
       link: "",
     },
     {
       id: 1727426707989,
+      typ: "Vecera",
       title: "Vajcia",
       ingredients: ["vajcia", "olej"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727851869819,
+      typ: "Vecera",
+      title: "Nuggets",
+      ingredients: ["kuracie meso", "struhanka"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727851980212,
+      typ: "Vecera",
+      title: "Pizza",
+      ingredients: ["podloge", "salama", "syr"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727852288026,
+      typ: "Obed",
+      title: "Kuracie teryaki",
+      ingredients: ["kuracie meso", "kokosovy olej", "ryza"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727852709240,
+      typ: "Obed",
+      title: "Ovsenie vlocke s fazulou",
+      ingredients: ["ovsenie vlocke", "pretlak", "fazula"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727852810786,
+      typ: "Obed",
+      title: "Bob",
+      ingredients: ["bob", "udene meso", "mrkva"],
+      how: "",
+      link: "",
+    },
+    {
+      id: 1727852879435,
+      typ: "Obed",
+      title: "Cuketovy gulas",
+      ingredients: ["kuracie meso", "cuketa", "smotana na varenie"],
+      how: "",
       link: "",
     },
   ];
@@ -66,8 +119,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     do {
       randomInt = getRandomIntInclusive(0, recipes.length - 1);
     } while (
-      recipeHistory.slice(0, 3).includes(randomInt) &&
-      recipes.length > 3
+      recipeHistory.slice(0, 7).includes(randomInt) &&
+      recipes.length > 7
     );
 
     // Now randomInt is not among the last 3 numbers
@@ -77,8 +130,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     recipeHistory.unshift(randomInt);
 
     // Optionally, keep the history at 3 items max
-    if (recipeHistory.length > 3) {
-      recipeHistory.length = 3;
+    if (recipeHistory.length > 7) {
+      recipeHistory.length = 7;
     }
 
     console.log(randomInt, recipeHistory);
@@ -90,8 +143,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
     // Adding recipe to the recipe object
     const newRecipe = {
       id: Date.now(),
+      typ: "",
       title: meal.value.trim(),
       ingredients: [],
+      how: "",
       link: "",
     };
     recipes.push(newRecipe);
@@ -110,10 +165,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     // Creating list of recipes-------------
     recipes.forEach((recipe) => {
-      //   console.log(recept);
-      // const html = `<li>${recipe.title}</li>
-      // <p class="ingredients-container">${[...recipe.ingredients]}</p></br>`;
-      // mealList.insertAdjacentHTML("beforeend", html);
       const mealListSingleItem = document.createElement("div");
       mealListSingleItem.classList.add("meal-list-item");
       mealListSingleItem.textContent = recipe.title;
@@ -127,21 +178,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
       mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
     });
-    //   const mealListItems = document.querySelectorAll(".meal-list li");
-
-    //   mealListItems.forEach((mealItem) => {
-    //     mealItem.addEventListener("click", () => {
-    //       let ingContainer = document.querySelector(".ingredients-container");
-    //       ingContainer.classList.toggle("show");
-    //       console.log("clicked on ingredients");
-    //     });
-    //   });
   }
 
   function addIngredient(recipeId) {
     const ingredient = prompt("enter ingredients:");
     if (ingredient) {
-      const recipe = recipes.find((r) => r.id === recipeId);
+      recipe = recipes.find((r) => r.id === recipeId);
       if (recipe) {
         recipe.ingredients.push(ingredient);
         recipe.link = source.value;
@@ -187,6 +229,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
     <label for="ingredientInput">Ingrediencie:</label>
     <input type="text" id="ingredientInput" placeholder="npr. muka, vajcia" value="">
     <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
+    <label for="modal-how-textarea">Komentar:</label>
+    <textarea name="modal-how-textarea" rows="5" ></textarea>
+    <small>Tu mozte napisat trosku o postupe na pripravu, alebo aj nemusite. Napiste akuklvek poznamku. Alebo nic.</small>
     <label for="sourceLink">Link na original recept:</label>
     <input type="text" id="sourceLink" placeholder="https://www..." value="">
     <small>Mozte pridat link na original recept. Moze to byt stranka, youtube video ...alebo nemusi byt nic. <br>Ziadne pole, nie je povinne.</small>

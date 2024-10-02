@@ -10,19 +10,15 @@
   <body>
     <div class="container">
       <img src="img/logo.webp" alt="" />
-      <form method="post">
-        <input
-          type="text"
-          value=""
-          id="meal"
-          placeholder="Dodaj jelo u rotaciju"
-        />
+      
+      <div class="result">Čo budeme jesť?</div>
+      <button id="gen-jedlo">↺</button>
+      <form method="post"></form>
+        <input type="text" value="" id="meal" placeholder="Pridaj jedlo" />
         <button type="button" method="post" value="submit" id="button-submit">
           +
         </button>
       </form>
-      <div class="result">Co budeme jest?</div>
-      <button id="gen-jedlo">↺</button>
       <ul class="meal-list"></ul>
     </div>
     <script src="script.js"></script>
