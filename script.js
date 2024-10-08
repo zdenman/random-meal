@@ -1,3 +1,4 @@
+// import updateRecipeList from "./recipeList.js";
 document.addEventListener("DOMContentLoaded", (e) => {
   const meal = document.querySelector("#meal");
   const buttonSubmit = document.querySelector("#button-submit");
@@ -5,6 +6,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const mealList = document.querySelector(".meal-list");
   let genJedlo = document.querySelector("#gen-jedlo");
   const source = document.querySelector("#sourceLink");
+
   // const modal = document.getElementById("openModalBtn");
   let recipe;
   let recipeHistory = [];
@@ -75,53 +77,35 @@ document.addEventListener("DOMContentLoaded", (e) => {
     },
   ];
 
-  // let recepty = [
-  //   "Lazanje",
-  //   "Cuketovy gulas",
-  //   "Bob",
-  //   "Makaroni Syr Slanina",
-  //   "Kuracie s krumplami",
-  //   "Kuracie meso s ryzov a zeleninov",
-  //   "Krumple na tapsi",
-  //   "Bolognese",
-  //   "Carbonara",
-  //   "Pizza",
-  //   "Lepna",
-  //   "Panzeroty",
-  //   "Kuracie nugetky",
-  //   "Ryzovie rezance s kuracim mesom",
-  // ];
-
   // List of meal from object on loading
-  recipes.forEach((recipe) => {
-    const mealListSingleItem = document.createElement("div");
-    mealListSingleItem.classList.add("meal-list-item");
-    mealListSingleItem.textContent = recipe.title;
-  
-    const addIngredientButton = document.createElement("button");
-    addIngredientButton.textContent = "+";
-    const recipeLink = document.createElement("a");
-    recipeLink.href = recipe.link;
-    recipeLink.classList.add("recipe-link");
-    recipeLink.textContent = "Zdroj";
-    addIngredientButton.addEventListener("click", () => {
-      console.log(`Opening modal for recipe ID: ${recipe.id}`); 
-      console.log(recipes) // Debugging line
-      openModal(recipe.id);
-    });
-    // Opening modal with recipe details
-    mealListSingleItem.addEventListener("click", () => {
-      console.log(`Opening modal for recipe ID: ${recipe.id}`);
-      
-    });
-    if(recipe.link) {
-      mealListSingleItem.appendChild(recipeLink);
-    }
-    // mealListSingleItem.appendChild(recipeLink);
-    mealListSingleItem.appendChild(addIngredientButton);
-    mealList.appendChild(mealListSingleItem);
-  });
-  
+  updateRecipeList();
+  // recipes.forEach((recipe) => {
+  //   const mealListSingleItem = document.createElement("div");
+  //   mealListSingleItem.classList.add("meal-list-item");
+  //   mealListSingleItem.textContent = recipe.title;
+
+  //   const addIngredientButton = document.createElement("button");
+  //   addIngredientButton.textContent = "+";
+  //   const recipeLink = document.createElement("a");
+  //   recipeLink.href = recipe.link;
+  //   recipeLink.classList.add("recipe-link");
+  //   recipeLink.textContent = "Zdroj";
+  //   addIngredientButton.addEventListener("click", () => {
+  //     //   console.log(`Opening modal for recipe ID: ${recipe.id}`);
+  //     //   console.log(recipes)
+  //     openModal(recipe.id);
+  //   });
+  //   // Opening modal with recipe details
+  //   mealListSingleItem.addEventListener("click", () => {
+  //     console.log(`Opening modal for recipe ID: ${recipe.id}`);
+  //   });
+  //   if (recipe.link) {
+  //     mealListSingleItem.appendChild(recipeLink);
+  //   }
+  //   // mealListSingleItem.appendChild(recipeLink);
+  //   mealListSingleItem.appendChild(addIngredientButton);
+  //   mealList.appendChild(mealListSingleItem);
+  // });
 
   function showRandomRecipe() {
     function getRandomIntInclusive(min, max) {
@@ -185,27 +169,38 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
       const addIngredientButton = document.createElement("button");
       addIngredientButton.textContent = "+";
+      const recipeLink = document.createElement("a");
+      recipeLink.href = recipe.link;
+      recipeLink.classList.add("recipe-link");
+      recipeLink.textContent = "Zdroj";
       addIngredientButton.addEventListener("click", () => {
-        // addIngredient(recipe.id);
+        //   console.log(`Opening modal for recipe ID: ${recipe.id}`);
+        //   console.log(recipes)
         openModal(recipe.id);
-        console.log("click");
       });
+      // Opening modal with recipe details
+      mealListSingleItem.addEventListener("click", () => {
+        console.log(`Opening modal for recipe ID: ${recipe.id}`);
+      });
+      if (recipe.link) {
+        mealListSingleItem.appendChild(recipeLink);
+      }
+      // mealListSingleItem.appendChild(recipeLink);
       mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
     });
   }
-
-  function addIngredient(recipeId) {
-    const ingredient = prompt("enter ingredients:");
-    if (ingredient) {
-      recipe = recipes.find((r) => r.id === recipeId);
-      if (recipe) {
-        recipe.ingredients.push(ingredient);
-        recipe.link = source.value;
-        console.log(recipes);
-      }
-    }
-  }
+  //   function addIngredient(recipeId) {
+  //     const ingredient = prompt("enter ingredients:");
+  //     if (ingredient) {
+  //       recipe = recipes.find((r) => r.id === recipeId);
+  //       if (recipe) {
+  //         recipe.ingredients.push(ingredient);
+  //         recipe.link = source.value;
+  //         console.log(recipes);
+  //       }
+  //     }
+  //   }
 
   //  Adding recipe on click----------------- + Button
   buttonSubmit.addEventListener("click", (e) => {
@@ -228,10 +223,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
   // Function to open the modal window
   function openModal(recipeId) {
     const recipe = recipes.find((r) => r.id === recipeId);
-  
+
     let overlay = document.createElement("div");
     overlay.id = "modalOverlay";
-  
+
     let modal = document.createElement("div");
     modal.id = "modalWindow";
     modal.innerHTML = `
@@ -239,12 +234,20 @@ document.addEventListener("DOMContentLoaded", (e) => {
       <p>Edit the recipe details below:</p>
       <form id="editRecipeForm">
         <label>Typ:</label>
-        <label><input type="radio" name="typ" value="Ranajky" ${recipe.typ === "Ranajky" ? "checked" : ""}> Ranajky</label>
-        <label><input type="radio" name="typ" value="Obed" ${recipe.typ === "Obed" ? "checked" : ""}> Obed</label>
-        <label><input type="radio" name="typ" value="Vecera" ${recipe.typ === "Vecera" ? "checked" : ""}> Vecera</label>
+        <label><input type="radio" name="typ" value="Ranajky" ${
+          recipe.typ === "Ranajky" ? "checked" : ""
+        }> Ranajky</label>
+        <label><input type="radio" name="typ" value="Obed" ${
+          recipe.typ === "Obed" ? "checked" : ""
+        }> Obed</label>
+        <label><input type="radio" name="typ" value="Vecera" ${
+          recipe.typ === "Vecera" ? "checked" : ""
+        }> Vecera</label>
         
         <label for="ingredientInput">Ingredients:</label>
-        <input type="text" id="ingredientInput" placeholder="Add ingredients" value="${recipe.ingredients.join(', ')}">
+        <input type="text" id="ingredientInput" placeholder="Add ingredients" value="${recipe.ingredients.join(
+          ", "
+        )}">
         <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
         
         <label for="modal-how-textarea">How to prepare:</label>
@@ -261,44 +264,59 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <button id="deleteRecipeBtn">Delete</button>
       </div>
     `;
-  
+
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
     overlay.style.display = "block";
-  
-    document.getElementById("closeModalBtn").addEventListener("click", function () {
-      overlay.remove();
-    });
-  
-    document.getElementById("saveRecipeBtn").addEventListener("click", function () {
-      saveRecipe(recipeId);
-      overlay.remove();
-    });
+
+    document
+      .getElementById("closeModalBtn")
+      .addEventListener("click", function () {
+        overlay.remove();
+      });
+
+    document
+      .getElementById("saveRecipeBtn")
+      .addEventListener("click", function () {
+        saveRecipe(recipeId);
+        saveRecipesToLocalStorage();
+        overlay.remove();
+      });
   }
-  
+
+  function saveRecipesToLocalStorage() {
+    const recipesJSON = JSON.stringify(recipes);
+    localStorage.setItem("recipes", recipesJSON);
+    console.log("Recipes saved to local storage.");
+  }
+
   function saveRecipe(recipeId) {
     const recipe = recipes.find((r) => r.id === recipeId);
-    
+
     recipe.typ = document.querySelector('input[name="typ"]:checked').value; // Save the selected type
-    recipe.ingredients = document.getElementById('ingredientInput').value.split(',').map(ing => ing.trim());
-    recipe.how = document.getElementById('modal-how-textarea').value;
-    recipe.link = document.getElementById('sourceLink').value;
-  
+    recipe.ingredients = document
+      .getElementById("ingredientInput")
+      .value.split(",")
+      .map((ing) => ing.trim());
+    recipe.how = document.getElementById("modal-how-textarea").value;
+    recipe.link = document.getElementById("sourceLink").value;
+
     updateRecipeList(); // Update the list with the new changes
   }
-  
-  
+
   function saveRecipe(recipeId) {
     const recipe = recipes.find((r) => r.id === recipeId);
-    
+
     recipe.typ = document.querySelector('input[name="typ"]').value;
-    recipe.ingredients = document.getElementById('ingredientInput').value.split(',').map(ing => ing.trim());
-    recipe.how = document.getElementById('modal-how-textarea').value;
-    recipe.link = document.getElementById('sourceLink').value;
-  
+    recipe.ingredients = document
+      .getElementById("ingredientInput")
+      .value.split(",")
+      .map((ing) => ing.trim());
+    recipe.how = document.getElementById("modal-how-textarea").value;
+    recipe.link = document.getElementById("sourceLink").value;
+
     updateRecipeList(); // Update the list with the new changes
   }
-  
 
   // Add event listener to the button to open the modal
   // modal.addEventListener("click", () => {
