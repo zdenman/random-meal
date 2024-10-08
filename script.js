@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const mealList = document.querySelector(".meal-list");
   let genJedlo = document.querySelector("#gen-jedlo");
   const source = document.querySelector("#sourceLink");
-  const modal = document.getElementById("openModalBtn");
+  // const modal = document.getElementById("openModalBtn");
   let recipe;
   let recipeHistory = [];
   let recipes = [
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
       title: "Pizza",
       ingredients: ["podloge", "salama", "syr"],
       how: "",
-      link: "",
+      link: "https://www.pizzahut.sk/pizza/pizza-napoli",
     },
     {
       id: 1727852288026,
@@ -92,22 +92,36 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //   "Ryzovie rezance s kuracim mesom",
   // ];
 
-  // List of meal from array on loading
-  recipes.forEach((recept) => {
-    //   console.log(recept);
+  // List of meal from object on loading
+  recipes.forEach((recipe) => {
     const mealListSingleItem = document.createElement("div");
     mealListSingleItem.classList.add("meal-list-item");
-    mealListSingleItem.textContent = recept.title;
-
+    mealListSingleItem.textContent = recipe.title;
+  
     const addIngredientButton = document.createElement("button");
     addIngredientButton.textContent = "+";
+    const recipeLink = document.createElement("a");
+    recipeLink.href = recipe.link;
+    recipeLink.classList.add("recipe-link");
+    recipeLink.textContent = "Zdroj";
     addIngredientButton.addEventListener("click", () => {
-      // addIngredient(recipe.id);
-      openModal();
+      console.log(`Opening modal for recipe ID: ${recipe.id}`); 
+      console.log(recipes) // Debugging line
+      openModal(recipe.id);
     });
+    // Opening modal with recipe details
+    mealListSingleItem.addEventListener("click", () => {
+      console.log(`Opening modal for recipe ID: ${recipe.id}`);
+      
+    });
+    if(recipe.link) {
+      mealListSingleItem.appendChild(recipeLink);
+    }
+    // mealListSingleItem.appendChild(recipeLink);
     mealListSingleItem.appendChild(addIngredientButton);
     mealList.appendChild(mealListSingleItem);
   });
+  
 
   function showRandomRecipe() {
     function getRandomIntInclusive(min, max) {
@@ -173,7 +187,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
       addIngredientButton.textContent = "+";
       addIngredientButton.addEventListener("click", () => {
         // addIngredient(recipe.id);
-        openModal();
+        openModal(recipe.id);
+        console.log("click");
       });
       mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
@@ -211,58 +226,82 @@ document.addEventListener("DOMContentLoaded", (e) => {
   });
 
   // Function to open the modal window
-  function openModal() {
-    // Create the overlay
+  function openModal(recipeId) {
+    const recipe = recipes.find((r) => r.id === recipeId);
+  
     let overlay = document.createElement("div");
     overlay.id = "modalOverlay";
-
-    // Create the modal window
+  
     let modal = document.createElement("div");
     modal.id = "modalWindow";
     modal.innerHTML = `
-    <h2>recipe.title</h2>
-    <p>Tu mozete pridat viac info o recepte.</p>
-    <form id="editRecipeForm">
-    <label><input type="radio" name="typ" value="Ranajky"> Ranajky</label>
-  <label><input type="radio" name="typ" value="Obed"> Obed</label>
-  <label><input type="radio" name="typ" value="Vecera"> Vecera</label>
-    <label for="ingredientInput">Ingrediencie:</label>
-    <input type="text" id="ingredientInput" placeholder="npr. muka, vajcia" value="">
-    <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
-    <label for="modal-how-textarea">Komentar:</label>
-    <textarea name="modal-how-textarea" rows="5" ></textarea>
-    <small>Tu mozte napisat trosku o postupe na pripravu, alebo aj nemusite. Napiste akuklvek poznamku. Alebo nic.</small>
-    <label for="sourceLink">Link na original recept:</label>
-    <input type="text" id="sourceLink" placeholder="https://www..." value="">
-    <small>Mozte pridat link na original recept. Moze to byt stranka, youtube video ...alebo nemusi byt nic. <br>Ziadne pole, nie je povinne.</small>
-    
-    </form>
-    <div class="button-container">
-    <button>Uloz</button>
-    <button id="closeModalBtn">X</button>
-    <button>Vymaz recept</button>
-    </div>
-  `;
-
-    // Append the modal to the overlay
+      <h2>${recipe.title}</h2>
+      <p>Edit the recipe details below:</p>
+      <form id="editRecipeForm">
+        <label>Typ:</label>
+        <label><input type="radio" name="typ" value="Ranajky" ${recipe.typ === "Ranajky" ? "checked" : ""}> Ranajky</label>
+        <label><input type="radio" name="typ" value="Obed" ${recipe.typ === "Obed" ? "checked" : ""}> Obed</label>
+        <label><input type="radio" name="typ" value="Vecera" ${recipe.typ === "Vecera" ? "checked" : ""}> Vecera</label>
+        
+        <label for="ingredientInput">Ingredients:</label>
+        <input type="text" id="ingredientInput" placeholder="Add ingredients" value="${recipe.ingredients.join(', ')}">
+        <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
+        
+        <label for="modal-how-textarea">How to prepare:</label>
+        <textarea id="modal-how-textarea" rows="5">${recipe.how}</textarea>
+        <small>Tu mozte napisat trosku o postupe na pripravu, alebo aj nemusite. Napiste akuklvek poznamku. Alebo nic.</small>
+        
+        <label for="sourceLink">Source link:</label>
+        <input type="text" id="sourceLink" value="${recipe.link}">
+        <small>Mozte pridat link na original recept. Moze to byt stranka, youtube video ...alebo nemusi byt nic. <br>Ziadne pole, nie je povinne.</small>
+      </form>
+      <div class="button-container">
+        <button id="saveRecipeBtn">Save</button>
+        <button id="closeModalBtn">Close</button>
+        <button id="deleteRecipeBtn">Delete</button>
+      </div>
+    `;
+  
     overlay.appendChild(modal);
-
-    // Append the overlay to the body
     document.body.appendChild(overlay);
-
-    // Show the modal by setting display to block
     overlay.style.display = "block";
-
-    // Add event listener to the close button
-    document
-      .getElementById("closeModalBtn")
-      .addEventListener("click", function () {
-        overlay.remove(); // Close the modal by removing the overlay
-      });
+  
+    document.getElementById("closeModalBtn").addEventListener("click", function () {
+      overlay.remove();
+    });
+  
+    document.getElementById("saveRecipeBtn").addEventListener("click", function () {
+      saveRecipe(recipeId);
+      overlay.remove();
+    });
   }
+  
+  function saveRecipe(recipeId) {
+    const recipe = recipes.find((r) => r.id === recipeId);
+    
+    recipe.typ = document.querySelector('input[name="typ"]:checked').value; // Save the selected type
+    recipe.ingredients = document.getElementById('ingredientInput').value.split(',').map(ing => ing.trim());
+    recipe.how = document.getElementById('modal-how-textarea').value;
+    recipe.link = document.getElementById('sourceLink').value;
+  
+    updateRecipeList(); // Update the list with the new changes
+  }
+  
+  
+  function saveRecipe(recipeId) {
+    const recipe = recipes.find((r) => r.id === recipeId);
+    
+    recipe.typ = document.querySelector('input[name="typ"]').value;
+    recipe.ingredients = document.getElementById('ingredientInput').value.split(',').map(ing => ing.trim());
+    recipe.how = document.getElementById('modal-how-textarea').value;
+    recipe.link = document.getElementById('sourceLink').value;
+  
+    updateRecipeList(); // Update the list with the new changes
+  }
+  
 
   // Add event listener to the button to open the modal
-  modal.addEventListener("click", () => {
-    openModal();
-  });
+  // modal.addEventListener("click", () => {
+  //   openModal(recipe.id);
+  // });
 }); //DOM content load end-------------------------

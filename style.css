@@ -54,6 +54,11 @@ body {
   cursor: pointer;
   background-color: #3a3a3a;
 }
+.recipe-link {
+  margin-left: auto;
+  padding-right: .5rem;
+  color:bisque;
+}
 /* Style for the overlay */
 #modalOverlay {
   display: none; /* Initially hidden */
