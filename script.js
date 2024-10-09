@@ -12,80 +12,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
   // const modal = document.getElementById("openModalBtn");
   // let recipe;
   let recipeHistory = [];
-  let recipes = [
-    // {
-    //   id: 1727425558221,
-    //   typ: "Obed",
-    //   title: "Lazanje",
-    //   ingredients: ["kory", "pretlak", "mletvo meso"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727426707989,
-    //   typ: "Vecera",
-    //   title: "Vajcia",
-    //   ingredients: ["vajcia", "olej"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727851869819,
-    //   typ: "Vecera",
-    //   title: "Nuggets",
-    //   ingredients: ["kuracie meso", "struhanka"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727851980212,
-    //   typ: "Vecera",
-    //   title: "Pizza",
-    //   ingredients: ["podloge", "salama", "syr"],
-    //   how: "",
-    //   link: "https://www.pizzahut.sk/pizza/pizza-napoli",
-    // },
-    // {
-    //   id: 1727852288026,
-    //   typ: "Obed",
-    //   title: "Kuracie teryaki",
-    //   ingredients: ["kuracie meso", "kokosovy olej", "ryza"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727852709240,
-    //   typ: "Obed",
-    //   title: "Ovsenie vlocke s fazulou",
-    //   ingredients: ["ovsenie vlocke", "pretlak", "fazula"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727852810786,
-    //   typ: "Obed",
-    //   title: "Bob",
-    //   ingredients: ["bob", "udene meso", "mrkva"],
-    //   how: "",
-    //   link: "",
-    // },
-    // {
-    //   id: 1727852879435,
-    //   typ: "Obed",
-    //   title: "Cuketovy gulas",
-    //   ingredients: ["kuracie meso", "cuketa", "smotana na varenie"],
-    //   how: "",
-    //   link: "",
-    // },
-  ];
+  let recipes = [];
 
-  // List of meal from object on loading
-
+  // List of meal on load
   loadRecipesFromLocalStorage();
 
   function showRandomRecipe() {
     if (recipes.length === 0) {
-      result.textContent = "Nemate ziaden pridany recept";
+      result.textContent = "Nemate ziaden recept";
       return;
     }
     function getRandomIntInclusive(min, max) {
@@ -132,10 +66,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   // Updating recipe list ---------------------------------------
   function updateRecipeList() {
-    // Clear the current list of recipes
     mealList.innerHTML = "";
 
-    // Creating list of recipes-------------
+    // Creating list of recipes - - - - - - - - - - - - -
     recipes.forEach((recipe) => {
       const mealListSingleItem = document.createElement("div");
       mealListSingleItem.classList.add("meal-list-item");
@@ -336,7 +269,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   function deleteRecipe(recipeId) {
     // Confirm deletion with the user
     const confirmation = confirm(
-      "Are you sure you want to delete this recipe?"
+      "Ste si istý, že chcete odstrániť tento recept? Táto akcia je nevratná."
     );
     if (confirmation) {
       // Find the index of the recipe to delete
@@ -358,9 +291,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
         recipeHistory = recipeHistory.map((i) => (i > index ? i - 1 : i));
 
         // Provide feedback to the user
-        alert("Recipe deleted successfully.");
+        alert("Recept bol úspešne odstránený.");
       } else {
-        alert("Recipe not found.");
+        alert("Recept nebol nájdený.");
       }
     }
   }

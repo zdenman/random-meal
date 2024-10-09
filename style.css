@@ -113,3 +113,13 @@ button:hover {
   cursor: pointer;
   background-color: black;
 }
+#gen-jedlo {
+  padding: 1.3rem 1.5rem;
+  border-radius: 50%;
+  background-color: cornflowerblue;
+}
+#gen-jedlo:hover {
+  background-color: #0341a5;
+  color: white;
+  cursor: pointer;
+}
