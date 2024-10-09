@@ -1,4 +1,4 @@
-export default function updateRecipeList() {
+export default function updateRecipeList(recipes) {
   // Clear the current list of recipes
   mealList.innerHTML = "";
 
