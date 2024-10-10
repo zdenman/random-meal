@@ -139,17 +139,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
           recipe.typ === "Vecera" ? "checked" : ""
         }> Vecera</label>
         
-        <label for="ingredientInput">Ingredients:</label>
+        <label for="ingredientInput">Ingrediencie:</label>
         <input type="text" id="ingredientInput" placeholder="Add ingredients" value="${recipe.ingredients.join(
           ", "
         )}">
         <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
         
-        <label for="modal-how-textarea">How to prepare:</label>
+        <label for="modal-how-textarea">Postup na pripravu:</label>
         <textarea id="modal-how-textarea" rows="5">${recipe.how}</textarea>
         <small>Tu mozte napisat trosku o postupe na pripravu, alebo aj nemusite. Napiste akuklvek poznamku. Alebo nic.</small>
         
-        <label for="sourceLink">Source link:</label>
+        <label for="sourceLink">Link:</label>
         <input type="text" id="sourceLink" value="${recipe.link}">
         <small>Mozte pridat link na original recept. Moze to byt stranka, youtube video ...alebo nemusi byt nic. <br>Ziadne pole, nie je povinne.</small>
       </form>
@@ -297,6 +297,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
       }
     }
   }
+  // Show all recipes count
+  const recipeCount = document.querySelector("#recipe-count");
+  recipeCount.innerHTML = `${recipes.length}`;
 
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener("change", importRecipes);
