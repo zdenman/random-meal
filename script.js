@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const source = document.querySelector("#sourceLink");
   const importJSON = document.querySelector("#import-button");
   const exportJSON = document.querySelector("#export-button");
+  const recipeCount = document.querySelector("#recipe-count-btn");
 
   // const modal = document.getElementById("openModalBtn");
   // let recipe;
@@ -95,13 +96,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
       mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
     });
+      // Show all recipes count
+  
+  recipeCount.innerHTML = `${recipes.length}`;
+  recipeCount.addEventListener("click", () => {
+    // mealList.style.opacity = 1;
+  });
   }
 
   //  Adding recipe on click----------------- + Button
   buttonSubmit.addEventListener("click", (e) => {
     e.preventDefault();
     addRecipe();
-    updateRecipeList();
+    saveRecipesToLocalStorage()
+    loadRecipesFromLocalStorage()
+    // updateRecipeList();
     console.log(recipes);
   });
 
@@ -297,9 +306,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
       }
     }
   }
-  // Show all recipes count
-  const recipeCount = document.querySelector("#recipe-count");
-  recipeCount.innerHTML = `${recipes.length}`;
+
 
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener("change", importRecipes);

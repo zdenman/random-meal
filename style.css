@@ -36,12 +36,15 @@ body {
 .result {
   font-weight: 900;
   font-size: 1.5rem;
+  text-align: center;
 }
 .show {
   display: block;
 }
 .meal-list {
   width: 100%;
+  /* display: block; */
+  /* opacity: 0; */
 }
 .meal-list-item {
   display: flex;
