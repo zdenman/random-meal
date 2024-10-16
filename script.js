@@ -1,4 +1,7 @@
-// import updateRecipeList from "./recipeList.js";
+// import Driver from 'https://unpkg.com/driver.js/dist/driver.esm.js';
+// import 'https://unpkg.com/driver.js/dist/driver.min.css';
+// import Driver from 'https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.esm.js';
+
 document.addEventListener("DOMContentLoaded", (e) => {
   const meal = document.querySelector("#meal");
   const buttonSubmit = document.querySelector("#button-submit");
@@ -135,7 +138,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     modal.id = "modalWindow";
     modal.innerHTML = `
       <h2>${recipe.title}</h2>
-      <p>Edit the recipe details below:</p>
+      <p>Pridaj viacej info k jedlu:</p>
       <form id="editRecipeForm">
         <label>Typ:</label>
         <label><input type="radio" name="typ" value="Ranajky" ${
@@ -310,4 +313,42 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener("change", importRecipes);
+
+  // const driver = window.driver.js.driver;
+ // Initialize the Driver instance using the global Driver class
+ const driverObj = driver({
+  showProgress: true,
+  steps: [
+    {
+      element: '#pridaj-jedlo-form',
+      popover: {
+        title: 'Pridajte jedlo',
+        description: 'Na začiatok tu pridáme názov jedla, ktoré chceme pridať do zoznamu.',
+        position: 'left',
+      }
+    },
+    {
+      element: '#gen-jedlo',
+      popover: {
+        title: 'Generovať jedlo',
+        description: 'Kliknutím na toto tlačidlo náhodne vyberiete jedlo zo zoznamu.',
+        position: 'right',
+      }
+    },
+    {
+      element: '.meal-list',
+      popover: {
+        title: 'Zoznam jedál',
+        description: 'Tu sa zobrazuje zoznam všetkých pridaných jedál.',
+        position: 'top',
+      }
+    },
+    // Add more steps as needed...
+  ]
+});
+
+// Start the guided tour
+driverObj.drive();
+  
+  // driverObj.drive();
 }); //DOM content load end-------------------------
