@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   const importJSON = document.querySelector("#import-button");
   const exportJSON = document.querySelector("#export-button");
   const recipeCount = document.querySelector("#recipe-count-btn");
+  const allRecipeCountBtn = document.querySelector("#recipe-count-btn-master");
 
   // const modal = document.getElementById("openModalBtn");
   // let recipe;
@@ -96,20 +97,20 @@ document.addEventListener("DOMContentLoaded", (e) => {
       mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
     });
-      // Show all recipes count
-  
-  recipeCount.innerHTML = `${recipes.length}`;
-  recipeCount.addEventListener("click", () => {
-    // mealList.style.opacity = 1;
-  });
+    // Show all recipes count
+
+    recipeCount.innerHTML = `${recipes.length}`;
+    recipeCount.addEventListener("click", () => {
+      // mealList.style.opacity = 1;
+    });
   }
 
   //  Adding recipe on click----------------- + Button
   buttonSubmit.addEventListener("click", (e) => {
     e.preventDefault();
     addRecipe();
-    saveRecipesToLocalStorage()
-    loadRecipesFromLocalStorage()
+    saveRecipesToLocalStorage();
+    loadRecipesFromLocalStorage();
     // updateRecipeList();
     console.log(recipes);
   });
@@ -122,6 +123,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   meal.addEventListener("focus", (e) => {
     meal.value = "";
+  });
+  // show / hide all recipe list
+  allRecipeCountBtn.addEventListener("click", (e) => {
+    mealList.classList.toggle("hide");
+    console.log("clicked");
   });
 
   // Function to open the modal window
@@ -306,7 +312,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
       }
     }
   }
-
 
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener("change", importRecipes);
