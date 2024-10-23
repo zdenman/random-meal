@@ -41,6 +41,9 @@ body {
 .show {
   display: block;
 }
+.hide {
+  display: none;
+}
 .meal-list {
   width: 100%;
   /* display: block; */
