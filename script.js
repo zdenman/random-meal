@@ -89,8 +89,27 @@ document.addEventListener("DOMContentLoaded", (e) => {
       addIngredientButton.addEventListener("click", () => {
         openModal(recipe.id);
       });
+      // Open recipe preview
+      function viewRecipe(recipeId) {
+        const recipe = recipes.find((r) => r.id === recipeId);
+
+        let overlay = document.createElement("div");
+        overlay.id = "modalOverlay";
+
+        let modal = document.createElement("div");
+        modal.id = "modalWindow";
+        modal.innerHTML = `<h2>${recipe.title}</h2>
+        <p>${recipe.ingredients}</p>
+        <p>${recipe.how}</p>
+        <p>${recipe.link}</p>`;
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        overlay.style.display = "block";
+      }
       // Opening modal with recipe details
       mealListSingleItem.addEventListener("click", () => {
+        viewRecipe(recipe.id);
         console.log(`Opening modal for recipe ID: ${recipe.id}`);
       });
       if (recipe.link) {
@@ -133,7 +152,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     console.log("clicked");
   });
 
-  // Function to open the modal window
+  // Function to open the modal window with recipe edit form
   function openModal(recipeId) {
     const recipe = recipes.find((r) => r.id === recipeId);
 
@@ -204,6 +223,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         overlay.remove();
       });
   }
+
   // Export JSON
   exportJSON.addEventListener("click", () => {
     exportRecipes();
@@ -320,40 +340,42 @@ document.addEventListener("DOMContentLoaded", (e) => {
   fileInput.addEventListener("change", importRecipes);
 
   // const driver = window.driver.js.driver;
- // Initialize the Driver instance using the global Driver class
- const driverObj = driver({
-  showProgress: true,
-  steps: [
-    {
-      element: '#pridaj-jedlo-form',
-      popover: {
-        title: 'Pridajte jedlo',
-        description: 'Na začiatok tu pridáme názov jedla, ktoré chceme pridať do zoznamu.',
-        position: 'left',
-      }
-    },
-    {
-      element: '#gen-jedlo',
-      popover: {
-        title: 'Generovať jedlo',
-        description: 'Kliknutím na toto tlačidlo náhodne vyberiete jedlo zo zoznamu.',
-        position: 'right',
-      }
-    },
-    {
-      element: '.meal-list',
-      popover: {
-        title: 'Zoznam jedál',
-        description: 'Tu sa zobrazuje zoznam všetkých pridaných jedál.',
-        position: 'top',
-      }
-    },
-    // Add more steps as needed...
-  ]
-});
+  // Initialize the Driver instance using the global Driver class
+  const driverObj = driver({
+    showProgress: true,
+    steps: [
+      {
+        element: "#pridaj-jedlo-form",
+        popover: {
+          title: "Pridajte jedlo",
+          description:
+            "Na začiatok tu pridáme názov jedla, ktoré chceme pridať do zoznamu.",
+          position: "left",
+        },
+      },
+      {
+        element: "#gen-jedlo",
+        popover: {
+          title: "Generovať jedlo",
+          description:
+            "Kliknutím na toto tlačidlo náhodne vyberiete jedlo zo zoznamu.",
+          position: "right",
+        },
+      },
+      {
+        element: ".meal-list",
+        popover: {
+          title: "Zoznam jedál",
+          description: "Tu sa zobrazuje zoznam všetkých pridaných jedál.",
+          position: "top",
+        },
+      },
+      // Add more steps as needed...
+    ],
+  });
 
-// Start the guided tour
-driverObj.drive();
-  
+  // Start the guided tour
+  driverObj.drive();
+
   // driverObj.drive();
 }); //DOM content load end-------------------------
