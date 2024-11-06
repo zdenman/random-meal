@@ -79,16 +79,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
       mealListSingleItem.classList.add("meal-list-item");
       mealListSingleItem.textContent = recipe.title;
 
-      const addIngredientButton = document.createElement("button");
-      addIngredientButton.textContent = "+";
-      const recipeLink = document.createElement("a");
-      recipeLink.href = recipe.link;
-      recipeLink.classList.add("recipe-link");
-      recipeLink.textContent = "Zdroj";
+      // const addIngredientButton = document.createElement("button");
+      // addIngredientButton.textContent = "+";
+
+      // const recipeLink = document.createElement("a");
+      // recipeLink.href = recipe.link;
+      // recipeLink.classList.add("recipe-link");
+      // recipeLink.textContent = "»";
       // Open recipe moddal for edit
-      addIngredientButton.addEventListener("click", () => {
-        openModal(recipe.id);
-      });
+      // addIngredientButton.addEventListener("click", () => {
+      //   openModal(recipe.id);
+      // });
       // Open recipe preview
       function viewRecipe(recipeId) {
         const recipe = recipes.find((r) => r.id === recipeId);
@@ -101,22 +102,40 @@ document.addEventListener("DOMContentLoaded", (e) => {
         modal.innerHTML = `<h2>${recipe.title}</h2>
         <p>${recipe.ingredients}</p>
         <p>${recipe.how}</p>
-        <p>${recipe.link}</p>`;
+        <p>${recipe.link}</p>
+        <button id="closeModalBtn">Close</button>`;
+
+        const addIngredientButton = document.createElement("button");
+        addIngredientButton.textContent = "Uprav";
+
+        addIngredientButton.addEventListener("click", () => {
+          overlay.remove();
+          openModal(recipe.id);
+        });
 
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
         overlay.style.display = "block";
+        // Buttons ------------------------
+        document
+          .getElementById("closeModalBtn")
+          .addEventListener("click", function () {
+            overlay.remove();
+          });
+
+        // Modal
+        modal.appendChild(addIngredientButton);
       }
       // Opening modal with recipe details
       mealListSingleItem.addEventListener("click", () => {
         viewRecipe(recipe.id);
         console.log(`Opening modal for recipe ID: ${recipe.id}`);
       });
-      if (recipe.link) {
-        mealListSingleItem.appendChild(recipeLink);
-      }
+      // if (recipe.link) {
+      //   mealListSingleItem.appendChild(recipeLink);
+      // }
       // mealListSingleItem.appendChild(recipeLink);
-      mealListSingleItem.appendChild(addIngredientButton);
+      // mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
     });
     // Show all recipes count
