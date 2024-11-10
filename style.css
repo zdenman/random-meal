@@ -61,17 +61,23 @@ body {
   cursor: pointer;
   background-color: #3a3a3a;
 }
-.recipe-link {
-  margin-left: auto;
-  padding-right: 0.5rem;
-  color: bisque;
-}
+
+ /* View Recipe modal  */
 .ingredient-row {
   margin-bottom: .5rem;
 }
 
 .ingredient-list-recipe-view {
   padding: 1rem 0 1rem 2rem;
+}
+.step-list-recipe-view {
+  padding: 1rem 0 1rem 2rem;
+}
+.step-list-recipe-view li {
+  margin-bottom: 1rem;
+}
+.recipe-source-link a {
+  color: deepskyblue;
 }
 /* Style for the overlay */
 #modalOverlay {
