@@ -66,6 +66,13 @@ body {
   padding-right: 0.5rem;
   color: bisque;
 }
+.ingredient-row {
+  margin-bottom: .5rem;
+}
+
+.ingredient-list-recipe-view {
+  padding: 1rem 0 1rem 2rem;
+}
 /* Style for the overlay */
 #modalOverlay {
   display: none; /* Initially hidden */

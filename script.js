@@ -90,9 +90,19 @@ document.addEventListener("DOMContentLoaded", (e) => {
       // addIngredientButton.addEventListener("click", () => {
       //   openModal(recipe.id);
       // });
-      // Open recipe preview
+      // * Open recipe preview --------------------------------------------------
       function viewRecipe(recipeId) {
         const recipe = recipes.find((r) => r.id === recipeId);
+
+           // Generate HTML for each ingredient
+        const ingredientsHtml = recipe.ingredients
+        .map((ingredient) => {
+        return `
+        <li>
+          ${ingredient.name} - ${ingredient.amount} ${ingredient.unit}
+        </li>`;
+        })
+        .join(""); // Join all list items into a single string
 
         let overlay = document.createElement("div");
         overlay.id = "modalOverlay";
@@ -100,23 +110,25 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let modal = document.createElement("div");
         modal.id = "modalWindow";
         modal.innerHTML = `<h2>${recipe.title}</h2>
-        <p>${recipe.ingredients}</p>
+        <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
         <p>${recipe.how}</p>
         <p>${recipe.link}</p>
-        <button id="closeModalBtn">Close</button>`;
-
-        const addIngredientButton = document.createElement("button");
-        addIngredientButton.textContent = "Uprav";
-
-        addIngredientButton.addEventListener("click", () => {
-          overlay.remove();
-          openModal(recipe.id);
-        });
-
+        <div class="button-container">
+        <button id="closeModalBtn">Close</button>
+        <button id="upravitButton">Upravit</button>
+        </div>`;
+        
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
         overlay.style.display = "block";
-        // Buttons ------------------------
+        
+        // Buttons ---------------------------------------------------------------
+        // Select the button from the `modal` and add event listeners
+  const addIngredientButton = modal.querySelector("#upravitButton");
+  addIngredientButton.addEventListener("click", () => {
+    overlay.remove();
+    openModal(recipe.id);
+  });
         document
           .getElementById("closeModalBtn")
           .addEventListener("click", function () {
@@ -124,19 +136,21 @@ document.addEventListener("DOMContentLoaded", (e) => {
           });
 
         // Modal
-        modal.appendChild(addIngredientButton);
+        // modal.appendChild(addIngredientButton);
       }
-      // Opening modal with recipe details
-      mealListSingleItem.addEventListener("click", () => {
-        viewRecipe(recipe.id);
-        console.log(`Opening modal for recipe ID: ${recipe.id}`);
-      });
+     
       // if (recipe.link) {
       //   mealListSingleItem.appendChild(recipeLink);
       // }
       // mealListSingleItem.appendChild(recipeLink);
       // mealListSingleItem.appendChild(addIngredientButton);
       mealList.appendChild(mealListSingleItem);
+       // * Opening modal with recipe details
+      
+       mealListSingleItem.addEventListener("click", () => {
+        viewRecipe(recipe.id);
+        console.log(`Opening modal for recipe ID: ${recipe.id}`);
+      });
     });
     // Show all recipes count
 
@@ -171,7 +185,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     console.log("clicked");
   });
 
-  // Function to open the modal window with recipe edit form
+  // * Function to open the modal window with recipe EDIT form
   function openModal(recipeId) {
     const recipe = recipes.find((r) => r.id === recipeId);
 
@@ -196,13 +210,13 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }> Vecera</label>
         
         <label for="ingredientInput">Ingrediencie:</label>
-        <input type="text" id="ingredientInput" placeholder="Add ingredients" value="${recipe.ingredients.join(
-          ", "
-        )}">
+        <div id="ingredientsContainer"></div>
+        <button type="button" id="addIngredientBtn">Add New Ingredient</button>
+        <br>
         <small>Mozte pisat aj viacej ingrediencii naraz, odelene ciarkou alebo npr. muka 100g, vajcia 3ks - toto je uplne v poriadku</small>
-        
-        <label for="modal-how-textarea">Postup na pripravu:</label>
-        <textarea id="modal-how-textarea" rows="5">${recipe.how}</textarea>
+        <br>
+        <label for="modal-how-textarea">Postup na pripravu:</label><br>
+        <textarea id="modal-how-textarea" rows="5">${recipe.how}</textarea><br>
         <small>Tu mozte napisat trosku o postupe na pripravu, alebo aj nemusite. Napiste akuklvek poznamku. Alebo nic.</small>
         
         <label for="sourceLink">Link:</label>
@@ -216,10 +230,17 @@ document.addEventListener("DOMContentLoaded", (e) => {
       </div>
     `;
 
+      // ^ Populate initial ingredients -----------------------------
+      const ingredientsContainer = modal.querySelector("#ingredientsContainer");
+      recipe.ingredients.forEach((ingredient) => addIngredientRow(ingredientsContainer, ingredient));
+
+      // ^ Add Ingredient Button Event Listener ------------------------
+      modal.querySelector("#addIngredientBtn").addEventListener("click", () => addIngredientRow(ingredientsContainer));
+
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
     overlay.style.display = "block";
-    // Buttons ------------------------
+    // * Buttons ------------------------
     document
       .getElementById("closeModalBtn")
       .addEventListener("click", function () {
@@ -229,7 +250,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     document
       .getElementById("saveRecipeBtn")
       .addEventListener("click", function () {
-        saveRecipe(recipeId);
+        saveRecipe(recipeId, ingredientsContainer);
         saveRecipesToLocalStorage(); //saving to local storage
         loadRecipesFromLocalStorage(); //updejting recipe list from local storage
         overlay.remove();
@@ -243,7 +264,26 @@ document.addEventListener("DOMContentLoaded", (e) => {
       });
   }
 
-  // Export JSON
+  // * Function to add a new ingredient row
+
+function addIngredientRow(container, ingredient = { name: "", amount: "", unit: "" }) {
+  const row = document.createElement("div");
+  row.classList.add("ingredient-row");
+
+  row.innerHTML = `
+    <input type="text" class="ingredient-name" placeholder="Nazov ingrediencie" value="${ingredient.name}">
+    <input type="text" class="ingredient-amount" placeholder="Mnoztvo" value="${ingredient.amount}">
+    <input type="text" class="ingredient-unit" placeholder="Mierka (g, l, ks, ..." value="${ingredient.unit}">
+    <button type="button" class="remove-ingredient">Delete</button>
+  `;
+
+  // Event listener for delete button
+  row.querySelector(".remove-ingredient").addEventListener("click", () => row.remove());
+
+  container.appendChild(row);
+}
+
+  // * Export JSON
   exportJSON.addEventListener("click", () => {
     exportRecipes();
   });
@@ -264,17 +304,25 @@ document.addEventListener("DOMContentLoaded", (e) => {
       console.log("No recipes found in local storage.");
     }
   }
-  // Save recipe function used on save button while editing recipe modal
-  function saveRecipe(recipeId) {
+  // * Save recipe function used on save button while editing recipe modal
+  function saveRecipe(recipeId, ingredientsContainer) {
     const recipe = recipes.find((r) => r.id === recipeId);
 
-    recipe.typ = document.querySelector('input[name="typ"]:checked').value; // Save the selected type
-    recipe.ingredients = document
-      .getElementById("ingredientInput")
-      .value.split(",")
-      .map((ing) => ing.trim());
+    // Updating type, how, and link
+    recipe.typ = document.querySelector('input[name="typ"]:checked').value;
     recipe.how = document.getElementById("modal-how-textarea").value;
     recipe.link = document.getElementById("sourceLink").value;
+   // Get all ingredients from input fields
+    const ingredientsData = Array.from(document.querySelectorAll('.ingredient-row')).map(row => {
+      return {
+        name: row.querySelector('.ingredient-name').value.trim(),
+        amount: parseFloat(row.querySelector('.ingredient-amount').value),
+        unit: row.querySelector('.ingredient-unit').value.trim()
+      };
+    });
+
+  // Update the recipe with the new data
+    recipe.ingredients = ingredientsData;
 
     updateRecipeList(); // Update the list with the new changes
   }
