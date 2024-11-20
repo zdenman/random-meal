@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
       ingredients: [],
       how: [],
       link: "",
+      image: "",
     };
     recipes.push(newRecipe);
     mealList.innerHTML = "";
@@ -117,7 +118,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         let modal = document.createElement("div");
         modal.id = "modalWindow";
-        modal.innerHTML = `<h2>${recipe.title}</h2>
+        modal.innerHTML = `<img class="recipe-image" src="${
+          recipe.image || "https://via.placeholder.com/300x200?text=No+Image"
+        }" alt="${recipe.title}">
+        <h2>${recipe.title}</h2>
         <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
         <p>Postup:</p>
         <ol class="step-list-recipe-view">${stepsHtml}</ol>
@@ -223,6 +227,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <label><input type="radio" name="typ" value="Vecera" ${
           recipe.typ === "Vecera" ? "checked" : ""
         }> Vecera</label>
+
+        <label for="recipeImageLink">Obrázok (URL):</label>
+        <input type="text" id="recipeImageLink" placeholder="Pridajte odkaz na obrazok receptu (nie je povinne)" value="${
+          recipe.image
+        }">
         
         <label for="ingredientInput">Ingrediencie:</label>
         <div id="ingredientsContainer"></div>
@@ -371,6 +380,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
     recipe.typ =
       document.querySelector('input[name="typ"]:checked')?.value || recipe.typ;
     recipe.link = document.getElementById("sourceLink")?.value || recipe.link;
+
+    // Save the image link
+    recipe.image =
+      document.getElementById("recipeImageLink")?.value.trim() || "";
 
     // Update ingredients
     recipe.ingredients = Array.from(
