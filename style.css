@@ -115,6 +115,8 @@ body {
   border-radius: 8px;
   width: calc(100% - 50px);
   max-width: 800px;
+  max-height: 80%;
+  overflow-y: auto;
 }
 #editRecipeForm {
   display: flex;
