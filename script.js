@@ -91,76 +91,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
       // addIngredientButton.addEventListener("click", () => {
       //   openModal(recipe.id);
       // });
-      // * Open recipe preview --------------------------------------------------
-      function viewRecipe(recipeId) {
-        const recipe = recipes.find((r) => r.id === recipeId);
-
-        // Generate HTML for each ingredient
-        const ingredientsHtml = recipe.ingredients
-          .map((ingredient) => {
-            return `
-        <li>
-          ${ingredient.name} - ${ingredient.amount} ${ingredient.unit}
-        </li>`;
-          })
-          .join(""); // Join all list items into a single string
-
-        // Generate HTML for each step, or show a message if there are no steps
-        const stepsHtml = recipe.how.length
-          ? recipe.how
-              .sort((a, b) => a.order - b.order) // Sort by order to ensure correct sequence
-              .map((step, index) => `<li>${step.description}</li>`)
-              .join("")
-          : "<p>Ziaden postup pre tento recept.</p>";
-
-        let overlay = document.createElement("div");
-        overlay.id = "modalOverlay";
-
-        let modal = document.createElement("div");
-        modal.id = "modalWindow";
-        modal.innerHTML = `<img class="recipe-image" src="${
-          recipe.image || "https://via.placeholder.com/300x200?text=No+Image"
-        }" alt="${recipe.title}">
-        <h2>${recipe.title}</h2>
-        <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
-        <p>Postup:</p>
-        <ol class="step-list-recipe-view">${stepsHtml}</ol>
-        <p class="recipe-source-link">${
-          recipe.link
-            ? `<a href="${recipe.link}" target="_blank">Link na original recept</a>`
-            : ""
-        }</p>
-        <div class="button-container">
-        <button id="closeModalBtn">Close</button>
-        <button id="upravitButton">Upravit</button>
-        <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
-        <p id="copyMessage" style="margin: 10px 0 10px 0;"></p>
-        </div>`;
-
-        overlay.appendChild(modal);
-        document.body.appendChild(overlay);
-        overlay.style.display = "block";
-
-        // Buttons ---------------------------------------------------------------
-        // Select the button from the `modal` and add event listeners
-        const addIngredientButton = modal.querySelector("#upravitButton");
-        addIngredientButton.addEventListener("click", () => {
-          overlay.remove();
-          openModal(recipe.id);
-        });
-        document
-          .getElementById("closeModalBtn")
-          .addEventListener("click", function () {
-            overlay.remove();
-          });
-
-        // Kopirovanie ingredienciji do schranky
-        modal
-          .querySelector("#copyIngredientsBtn")
-          .addEventListener("click", () => {
-            copyIngredientsToClipboard(recipe.id);
-          });
-      }
 
       // if (recipe.link) {
       //   mealListSingleItem.appendChild(recipeLink);
@@ -182,7 +112,76 @@ document.addEventListener("DOMContentLoaded", (e) => {
     recipeCount.addEventListener("click", () => {
       // mealList.style.opacity = 1;
     });
-  }
+  } // End of Update recipe list ----------------------------------------
+
+  // * Open recipe preview --------------------------------------------------
+  function viewRecipe(recipeId) {
+    const recipe = recipes.find((r) => r.id === recipeId);
+
+    // Generate HTML for each ingredient
+    const ingredientsHtml = recipe.ingredients
+      .map((ingredient) => {
+        return `
+        <li>
+          ${ingredient.name} - ${ingredient.amount} ${ingredient.unit}
+        </li>`;
+      })
+      .join(""); // Join all list items into a single string
+
+    // Generate HTML for each step, or show a message if there are no steps
+    const stepsHtml = recipe.how.length
+      ? recipe.how
+          .sort((a, b) => a.order - b.order) // Sort by order to ensure correct sequence
+          .map((step, index) => `<li>${step.description}</li>`)
+          .join("")
+      : "<p>Ziaden postup pre tento recept.</p>";
+
+    let overlay = document.createElement("div");
+    overlay.id = "modalOverlay";
+
+    let modal = document.createElement("div");
+    modal.id = "modalWindow";
+    modal.innerHTML = `<img class="recipe-image" src="${
+      recipe.image || "https://via.placeholder.com/300x200?text=No+Image"
+    }" alt="${recipe.title}">
+        <h2>${recipe.title}</h2>
+        <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
+        <p>Postup:</p>
+        <ol class="step-list-recipe-view">${stepsHtml}</ol>
+        <p class="recipe-source-link">${
+          recipe.link
+            ? `<a href="${recipe.link}" target="_blank">Link na original recept</a>`
+            : ""
+        }</p>
+        <div class="button-container">
+        <button id="closeModalBtn">Close</button>
+        <button id="upravitButton">Upravit</button>
+        <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
+        <p id="copyMessage" style="margin: 10px 0 10px 0;"></p>
+        </div>`;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+    overlay.style.display = "block";
+
+    // Buttons ---------------------------------------------------------------
+    // Select the button from the `modal` and add event listeners
+    const addIngredientButton = modal.querySelector("#upravitButton");
+    addIngredientButton.addEventListener("click", () => {
+      overlay.remove();
+      openModal(recipe.id);
+    });
+    document
+      .getElementById("closeModalBtn")
+      .addEventListener("click", function () {
+        overlay.remove();
+      });
+
+    // Kopirovanie ingredienciji do schranky
+    modal.querySelector("#copyIngredientsBtn").addEventListener("click", () => {
+      copyIngredientsToClipboard(recipe.id);
+    });
+  } //End of viewRecipe
 
   //  Adding recipe on click----------------- + Button
   buttonSubmit.addEventListener("click", (e) => {
@@ -204,10 +203,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
     meal.value = "";
   });
   // show / hide all recipe list
-  allRecipeCountBtn.addEventListener("click", (e) => {
-    mealList.classList.toggle("hide");
-    console.log("clicked");
-  });
+  // allRecipeCountBtn.addEventListener("click", (e) => {
+  //   mealList.classList.toggle("hide");
+  //   console.log("clicked");
+  // });
 
   // * Function to open the modal window with recipe EDIT form
 
@@ -523,6 +522,80 @@ document.addEventListener("DOMContentLoaded", (e) => {
         console.error("Chyba pri kopírovaní do schránky:", err);
       });
   }
+
+  // ASearch recipes ------------------------------------------------------------------
+  // Adding a function to handle the search
+  function filterRecipeList(searchQuery = "") {
+    // const mealList = document.querySelector(".meal-list");
+
+    // Clear the current list
+    mealList.innerHTML = "";
+
+    // Filter recipes based on the search query
+    const filteredRecipes = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Display filtered recipes
+    filteredRecipes.forEach((recipe) => {
+      const mealListSingleItem = document.createElement("div");
+      mealListSingleItem.classList.add("meal-list-item");
+      mealListSingleItem.textContent = recipe.title;
+
+      // Add event listener to view the recipe details
+      mealListSingleItem.addEventListener("click", () => {
+        viewRecipe(recipe.id);
+      });
+
+      mealList.appendChild(mealListSingleItem);
+    });
+
+    // Show a message if no recipes match
+    if (filteredRecipes.length === 0) {
+      mealList.innerHTML = "<p>Žiadne recepty nevyhovujú hľadaniu.</p>";
+    }
+  }
+
+  // Updating button click logic to include the search bar
+  allRecipeCountBtn.addEventListener("click", (e) => {
+    // const mealList = document.querySelector(".meal-list");
+
+    // Toggle visibility of the meal list and add the search bar
+    mealList.classList.toggle("hide");
+
+    if (!mealList.classList.contains("hide")) {
+      // Add a search input dynamically
+      if (!document.getElementById("searchInput")) {
+        const searchContainer = document.createElement("div");
+        searchContainer.id = "searchContainer";
+        searchContainer.style.marginBottom = "10px";
+
+        searchContainer.innerHTML = `
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Hľadajte recepty..." 
+          style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"
+        />
+      `;
+
+        mealList.parentElement.insertBefore(searchContainer, mealList);
+
+        // Add an event listener for real-time search
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", (event) => {
+          filterRecipeList(event.target.value);
+        });
+      }
+
+      // Reset the search input and show all recipes
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) {
+        searchInput.value = "";
+      }
+      filterRecipeList();
+    }
+  });
 
   // const driver = window.driver.js.driver;
   // Initialize the Driver instance using the global Driver class
