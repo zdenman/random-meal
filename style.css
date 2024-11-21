@@ -117,6 +117,7 @@ body {
   max-width: 800px;
   max-height: 80%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Plynulé posúvanie na iOS */
 }
 #editRecipeForm {
   display: flex;
@@ -137,6 +138,46 @@ body {
   object-fit: cover;
   padding-top: 0.8rem;
 }
+
+/* Scrollbars stylings */
+html {
+  overflow-y: auto; /* Automatické zobrazenie scrollbar, ak je potrebné */
+}
+/* Štýl scrollbar pre moderné prehliadače (Chrome, Edge, Safari) */
+html::-webkit-scrollbar {
+  width: 20px; /* Šírka scrollbar */
+  display: none; /* Skry scrollbar úplne */
+}
+
+html::-webkit-scrollbar-track {
+  background: #333; /* Pozadie scrollbaru */
+  border-radius: 6px; /* Zaoblenie */
+}
+html:has(:overflowing) {
+  overflow-y: scroll; /* Zobraz scrollbar len ak je potrebné */
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #555; /* Farba "thumb" */
+  border-radius: 6px; /* Zaoblenie "thumb" */
+  border: 2px solid #333; /* Okraje pre lepší kontrast */
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: #777; /* Svetlejšia farba pri hover */
+}
+
+/* Pre Firefox */
+html {
+  scrollbar-width: thin; /* Tenký scrollbar */
+  scrollbar-color: #555 #333; /* Thumb (#555), Track (#333) */
+}
+
+/* Globálny fallback pre staršie prehliadače */
+html {
+  overflow-y: scroll; /* Uisti sa, že overflow-y je nastavené */
+}
+
 .button-container {
   margin-top: 1rem;
 }
