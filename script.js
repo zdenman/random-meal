@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <button id="closeModalBtn">Close</button>
         <button id="upravitButton">Upravit</button>
         <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
+        <p id="copyMessage" style="margin: 10px 0 10px 0;"></p>
         </div>`;
 
         overlay.appendChild(modal);
@@ -508,7 +509,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
     navigator.clipboard
       .writeText(ingredientsList)
       .then(() => {
-        alert("Zoznam ingrediencií bol skopírovaný do schránky!");
+        // Zobraziť inline správu o úspechu
+        const messageContainer = document.getElementById("copyMessage");
+        messageContainer.textContent = "Ingrediencie boli skopírované!";
+        messageContainer.style.color = "green";
+
+        // Skryť správu po 3 sekundách
+        setTimeout(() => {
+          messageContainer.textContent = "";
+        }, 3000);
       })
       .catch((err) => {
         console.error("Chyba pri kopírovaní do schránky:", err);
