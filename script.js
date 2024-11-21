@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <div class="button-container">
         <button id="closeModalBtn">Close</button>
         <button id="upravitButton">Upravit</button>
+        <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
         </div>`;
 
         overlay.appendChild(modal);
@@ -152,8 +153,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
             overlay.remove();
           });
 
-        // Modal
-        // modal.appendChild(addIngredientButton);
+        // Kopirovanie ingredienciji do schranky
+        modal
+          .querySelector("#copyIngredientsBtn")
+          .addEventListener("click", () => {
+            copyIngredientsToClipboard(recipe.id);
+          });
       }
 
       // if (recipe.link) {
@@ -486,6 +491,29 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   const fileInput = document.getElementById("fileInput");
   fileInput.addEventListener("change", importRecipes);
+
+  // google keep
+  function copyIngredientsToClipboard(recipeId) {
+    const recipe = recipes.find((r) => r.id === recipeId);
+
+    // Generovať textový zoznam ingrediencií
+    const ingredientsList = recipe.ingredients
+      .map(
+        (ingredient) =>
+          `- ${ingredient.name} (${ingredient.amount} ${ingredient.unit})`
+      )
+      .join("\n");
+
+    // Skopírovať do schránky
+    navigator.clipboard
+      .writeText(ingredientsList)
+      .then(() => {
+        alert("Zoznam ingrediencií bol skopírovaný do schránky!");
+      })
+      .catch((err) => {
+        console.error("Chyba pri kopírovaní do schránky:", err);
+      });
+  }
 
   // const driver = window.driver.js.driver;
   // Initialize the Driver instance using the global Driver class
