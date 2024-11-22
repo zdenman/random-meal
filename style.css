@@ -178,6 +178,80 @@ html {
   overflow-y: scroll; /* Uisti sa, že overflow-y je nastavené */
 }
 
+/* Hladaj podla ingrediencii */
+#ingredientSearchContainer {
+  border: 1px solid #505050;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #414141;
+  border-radius: 5px;
+}
+
+/* Flex Container */
+.ingredient-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+/* Flex Item */
+.ingredient-flex-item {
+  flex: 1 1 calc(33.333% - 15px); /* 3 columns by default */
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #505050;
+  border-radius: 5px;
+  background-color: #414141;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Checkbox Styling */
+.ingredient-checkbox {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+/* Label Styling */
+.ingredient-flex-item label {
+  cursor: pointer;
+}
+
+/* Highlight Checked Ingredients */
+.ingredient-checkbox:checked + label {
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .ingredient-flex-item {
+    flex: 1 1 calc(50% - 15px); /* 2 columns on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .ingredient-flex-item {
+    flex: 1 1 calc(100% - 15px); /* 1 column on very small screens */
+  }
+}
+.meal-list-item {
+  padding: 10px;
+  border: 1px solid #505050;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.meal-list-item:hover {
+  background-color: #242424;
+}
+
 .button-container {
   margin-top: 1rem;
 }

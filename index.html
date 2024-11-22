@@ -12,7 +12,7 @@
 
     <script type="module" src="script.js"></script>
 
-    <title>Co budeme jest?</title>
+    <title>Co budeme dnes jest?</title>
   </head>
   <body>
     <nav>
@@ -25,7 +25,7 @@
     <div class="container">
       <img src="img/logo.webp" alt="" />
 
-      <div class="result">Čo budeme jesť?</div>
+      <div class="result">Čo budeme dnes jesť?</div>
       <button id="gen-jedlo">↺</button>
       <form id="pridaj-jedlo-form">
         <input type="text" value="" id="meal" placeholder="Pridaj jedlo" />
@@ -36,6 +36,13 @@
       <button id="recipe-count-btn-master">
         Vsetky recepty <span id="recipe-count-btn"></span>
       </button>
+      <button id="searchByIngredientsBtn" class="hide">
+        Hladaj podla ingrediencii
+      </button>
+      <div
+        id="ingredientSearchContainer"
+        style="display: none; margin-top: 20px"
+      ></div>
       <ul id="meal-list" class="meal-list hide"></ul>
     </div>
   </body>

@@ -563,6 +563,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     // Toggle visibility of the meal list
     mealList.classList.toggle("hide");
+    searchByIngredientsBtn.classList.toggle("hide");
+    if (ingredientSearchContainer.style.display === "block") {
+      ingredientSearchContainer.style.display = "none";
+    }
 
     if (mealList.classList.contains("hide")) {
       // If the list is hidden, remove the search bar
@@ -602,6 +606,116 @@ document.addEventListener("DOMContentLoaded", (e) => {
       filterRecipeList();
     }
   });
+
+  // Event listener for the "Hladaj podla ingrediencii" button
+  const searchByIngredientsBtn = document.getElementById(
+    "searchByIngredientsBtn"
+  );
+  const ingredientSearchContainer = document.getElementById(
+    "ingredientSearchContainer"
+  );
+
+  searchByIngredientsBtn.addEventListener("click", () => {
+    // Toggle visibility of the ingredient search container
+    ingredientSearchContainer.style.display =
+      ingredientSearchContainer.style.display === "none" ? "block" : "none";
+
+    // Populate the ingredient interface if it's shown
+    if (ingredientSearchContainer.style.display === "block") {
+      populateIngredientInterface();
+    }
+  });
+
+  // Function to populate the ingredient search interface
+  function populateIngredientInterface() {
+    ingredientSearchContainer.innerHTML = ""; // Clear previous content
+
+    // Get a list of unique ingredients and counts, sorted by count
+    const ingredientCounts = {};
+    recipes.forEach((recipe) => {
+      recipe.ingredients.forEach((ingredient) => {
+        const name = ingredient.name ? ingredient.name.toLowerCase() : null;
+        if (name) {
+          if (ingredientCounts[name]) {
+            ingredientCounts[name]++;
+          } else {
+            ingredientCounts[name] = 1;
+          }
+        }
+      });
+    });
+
+    const sortedIngredients = Object.entries(ingredientCounts)
+      .sort((a, b) => b[1] - a[1]) // Sort by count descending
+      .map(([name, count]) => ({ name, count }));
+
+    // Create a flexbox container
+    const flexContainer = document.createElement("div");
+    flexContainer.classList.add("ingredient-flex-container");
+
+    // Populate the flexbox with ingredients
+    sortedIngredients.forEach(({ name, count }) => {
+      const ingredientItem = document.createElement("div");
+      ingredientItem.classList.add("ingredient-flex-item");
+
+      // Shorten the ingredient name if it's too long
+      const truncatedName = name.length > 15 ? name.slice(0, 15) + "..." : name;
+
+      ingredientItem.innerHTML = `
+        <input type="checkbox" class="ingredient-checkbox" value="${name}" id="checkbox-${name}" />
+        <label for="checkbox-${name}" title="${name}">${truncatedName} (${count})</label>
+      `;
+
+      flexContainer.appendChild(ingredientItem);
+    });
+
+    ingredientSearchContainer.appendChild(flexContainer);
+
+    // Add event listener for checkboxes
+    const checkboxes = document.querySelectorAll(".ingredient-checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", filterRecipesByIngredients);
+    });
+  }
+
+  // Function to filter recipes based on selected ingredients
+  function filterRecipesByIngredients() {
+    const selectedIngredients = Array.from(
+      document.querySelectorAll(".ingredient-checkbox:checked")
+    ).map((checkbox) => checkbox.value);
+
+    // Filter recipes based on selected ingredients
+    const filteredRecipes = recipes.filter((recipe) =>
+      selectedIngredients.every((ingredient) =>
+        recipe.ingredients.some(
+          (ing) =>
+            ing.name && ing.name.toLowerCase() === ingredient.toLowerCase()
+        )
+      )
+    );
+
+    // Update the recipe list with filtered results
+    const mealList = document.querySelector(".meal-list");
+    mealList.innerHTML = ""; // Clear the current list
+
+    if (filteredRecipes.length > 0) {
+      filteredRecipes.forEach((recipe) => {
+        const mealListSingleItem = document.createElement("div");
+        mealListSingleItem.classList.add("meal-list-item");
+        mealListSingleItem.textContent = recipe.title;
+
+        // Add event listener to view the recipe details
+        mealListSingleItem.addEventListener("click", () => {
+          viewRecipe(recipe.id);
+        });
+
+        mealList.appendChild(mealListSingleItem);
+      });
+    } else {
+      mealList.innerHTML =
+        "<p>Žiadne recepty nevyhovujú zvoleným ingredienciám.</p>";
+    }
+  }
 
   // const driver = window.driver.js.driver;
   // Initialize the Driver instance using the global Driver class
