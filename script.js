@@ -558,26 +558,32 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   // Updating button click logic to include the search bar
   allRecipeCountBtn.addEventListener("click", (e) => {
-    // const mealList = document.querySelector(".meal-list");
+    const mealList = document.querySelector(".meal-list");
+    const searchContainer = document.getElementById("searchContainer");
 
-    // Toggle visibility of the meal list and add the search bar
+    // Toggle visibility of the meal list
     mealList.classList.toggle("hide");
 
-    if (!mealList.classList.contains("hide")) {
-      // Add a search input dynamically
+    if (mealList.classList.contains("hide")) {
+      // If the list is hidden, remove the search bar
+      if (searchContainer) {
+        searchContainer.remove();
+      }
+    } else {
+      // If the list is shown, add the search bar
       if (!document.getElementById("searchInput")) {
         const searchContainer = document.createElement("div");
         searchContainer.id = "searchContainer";
         searchContainer.style.marginBottom = "10px";
 
         searchContainer.innerHTML = `
-        <input 
-          type="text" 
-          id="searchInput" 
-          placeholder="Hľadajte recepty..." 
-          style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"
-        />
-      `;
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Hľadajte recepty..." 
+            style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"
+          />
+        `;
 
         mealList.parentElement.insertBefore(searchContainer, mealList);
 
