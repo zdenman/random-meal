@@ -89,6 +89,10 @@ body {
   width: auto;
   background-color: green;
 }
+.step-description {
+  width: 93%;
+  margin-bottom: .8rem;
+}
 
 /* Style for the overlay */
 #modalOverlay {
