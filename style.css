@@ -91,7 +91,17 @@ body {
 }
 .step-description {
   width: 93%;
-  margin-bottom: .8rem;
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+/* .step-description:first-of-type {
+  margin-top: 0.1rem;
+} */
+.remove-step {
+  background-color: crimson;
+}
+textarea {
+  padding-inline: 0.5rem;
 }
 
 /* Style for the overlay */
@@ -195,16 +205,16 @@ html {
 .ingredient-flex-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  justify-content: space-between;
+  gap: 5px;
+  justify-content: flex-start;
 }
 
 /* Flex Item */
 .ingredient-flex-item {
-  flex: 1 1 calc(33.333% - 15px); /* 3 columns by default */
-  box-sizing: border-box;
-  padding: 10px;
-  border: 1px solid #505050;
+  flex: 1 1 calc(25% - 10px); /* 3 columns by default */
+  /* box-sizing: border-box; */
+  /* padding: 10px; */
+  /* border: 1px solid #505050; */
   border-radius: 5px;
   background-color: #414141;
   text-align: left;
@@ -213,6 +223,12 @@ html {
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: small;
+}
+.ingredient-flex-item::after {
+  content: "";
+  flex: 1 1 calc(25% - 15px); /* Same as items */
+  visibility: hidden; /* Make it invisible */
 }
 
 /* Checkbox Styling */
@@ -235,13 +251,13 @@ html {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .ingredient-flex-item {
-    flex: 1 1 calc(50% - 15px); /* 2 columns on smaller screens */
+    flex: 1 1 calc(33.333% - 10px); /* 3 columns on smaller screens */
   }
 }
 
 @media (max-width: 480px) {
   .ingredient-flex-item {
-    flex: 1 1 calc(100% - 15px); /* 1 column on very small screens */
+    flex: 1 1 calc(100% - 5px); /* 1 column on very small screens */
   }
 }
 .meal-list-item {
@@ -261,8 +277,8 @@ html {
 }
 button {
   align-self: flex-start;
-  padding: 0.2rem 1rem;
-  background-color: lightslategray;
+  padding: 0.4rem 1.5rem;
+  background-color: rgb(25, 92, 158);
   border: none;
   color: white;
   border-radius: 3px;

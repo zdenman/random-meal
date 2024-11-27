@@ -142,7 +142,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     let modal = document.createElement("div");
     modal.id = "modalWindow";
     modal.innerHTML = `<img class="recipe-image" src="${
-      recipe.image || "https://via.placeholder.com/300x200?text=No+Image"
+      recipe.image ||
+      "https://fakeimg.pl/600x200/1f1f1f/909090?text=fotka+receptu+ni+je+k+dispozicii&font=bebas&font_size=16"
     }" alt="${recipe.title}">
         <h2>${recipe.title}</h2>
         <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
@@ -150,11 +151,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <ol class="step-list-recipe-view">${stepsHtml}</ol>
         <p class="recipe-source-link">${
           recipe.link
-            ? `<a href="${recipe.link}" target="_blank">Link na original recept</a>`
+            ? `<a href="${recipe.link}" target="_blank">Original recept</a>`
             : ""
         }</p>
         <div class="button-container">
-        <button id="closeModalBtn">Close</button>
+        <button id="closeModalBtn">Zavri</button>
         <button id="upravitButton">Upravit</button>
         <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
         <p id="copyMessage" style="margin: 10px 0 10px 0;"></p>
@@ -243,6 +244,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <button type="button" id="addIngredientBtn">Pridaj ingredienciu</button>
         <br>
         <label for="modal-how-textarea">Postup na pripravu:</label><br>
+        <small>Postup na pripravu po krokoch. Popiste co a ako postupovat v kazdom kroku. NIe je povinne.</small>
         <div id="stepsContainer"></div>
         <button type="button" id="addStepBtn">Pridaj krok</button>
         
@@ -333,7 +335,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     row.classList.add("step-row");
 
     row.innerHTML = `
-    <input type="text" class="step-description" placeholder="Popis kroku" value="${step.description}">
+<textarea class="step-description" placeholder="Popis kroku" rows="4" style="width: 100%; resize: true;">${step.description}</textarea>
     <button type="button" class="remove-step">X</button>
   `;
 
