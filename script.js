@@ -672,7 +672,7 @@
 
       ingredientItem.innerHTML = `
         <input type="checkbox" class="ingredient-checkbox" value="${name}" id="checkbox-${name}" />
-        <label for="checkbox-${name}" title="${name}">${truncatedName} (${count})</label>
+        <label for="checkbox-${name}" title="${name}">${truncatedName} ${count}</label>
       `;
 
       flexContainer.appendChild(ingredientItem);
