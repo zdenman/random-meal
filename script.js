@@ -1,15 +1,15 @@
-// import Driver from 'https://unpkg.com/driver.js/dist/driver.esm.js';
-// import 'https://unpkg.com/driver.js/dist/driver.min.css';
-// import Driver from 'https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.esm.js';
 
-document.addEventListener("DOMContentLoaded", (e) => {
+// import { driver } from "driver.js";
+// import "driver.js/dist/driver.css";
+
+// document.addEventListener("DOMContentLoaded", (e) => {
   const meal = document.querySelector("#meal");
   const buttonSubmit = document.querySelector("#button-submit");
   const result = document.querySelector(".result");
   const mealList = document.querySelector(".meal-list");
   let genJedlo = document.querySelector("#gen-jedlo");
-  const source = document.querySelector("#sourceLink");
-  const importJSON = document.querySelector("#import-button");
+  // const source = document.querySelector("#sourceLink");
+  // const importJSON = document.querySelector("#import-button");
   const exportJSON = document.querySelector("#export-button");
   const recipeCount = document.querySelector("#recipe-count-btn");
   const allRecipeCountBtn = document.querySelector("#recipe-count-btn-master");
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   // List of meal on load
   loadRecipesFromLocalStorage();
+
 
   function showRandomRecipe() {
     if (recipes.length === 0) {
@@ -758,4 +759,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
   driverObj.drive();
 
   // driverObj.drive();
-}); //DOM content load end-------------------------
+// }); 
+//DOM content load end-------------------------
