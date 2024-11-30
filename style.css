@@ -89,6 +89,20 @@ body {
   width: auto;
   background-color: green;
 }
+.step-description {
+  width: 93%;
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+/* .step-description:first-of-type {
+  margin-top: 0.1rem;
+} */
+.remove-step {
+  background-color: crimson;
+}
+textarea {
+  padding-inline: 0.5rem;
+}
 
 /* Style for the overlay */
 #modalOverlay {
@@ -178,13 +192,93 @@ html {
   overflow-y: scroll; /* Uisti sa, že overflow-y je nastavené */
 }
 
+/* Hladaj podla ingrediencii */
+#ingredientSearchContainer {
+  border: 1px solid #505050;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #414141;
+  border-radius: 5px;
+}
+
+/* Flex Container */
+.ingredient-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: flex-start;
+}
+
+/* Flex Item */
+.ingredient-flex-item {
+  flex: 1 1 calc(25% - 10px); /* 3 columns by default */
+  /* box-sizing: border-box; */
+  /* padding: 10px; */
+  /* border: 1px solid #505050; */
+  border-radius: 5px;
+  background-color: #414141;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: small;
+}
+.ingredient-flex-item::after {
+  content: "";
+  flex: 1 1 calc(25% - 15px); /* Same as items */
+  visibility: hidden; /* Make it invisible */
+}
+
+/* Checkbox Styling */
+.ingredient-checkbox {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+/* Label Styling */
+.ingredient-flex-item label {
+  cursor: pointer;
+}
+
+/* Highlight Checked Ingredients */
+.ingredient-checkbox:checked + label {
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .ingredient-flex-item {
+    flex: 1 1 calc(33.333% - 10px); /* 3 columns on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .ingredient-flex-item {
+    flex: 1 1 calc(100% - 5px); /* 1 column on very small screens */
+  }
+}
+.meal-list-item {
+  padding: 10px;
+  border: 1px solid #505050;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.meal-list-item:hover {
+  background-color: #242424;
+}
+
 .button-container {
   margin-top: 1rem;
 }
 button {
   align-self: flex-start;
-  padding: 0.2rem 1rem;
-  background-color: lightslategray;
+  padding: 0.4rem 1.5rem;
+  background-color: rgb(25, 92, 158);
   border: none;
   color: white;
   border-radius: 3px;

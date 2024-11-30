@@ -1,15 +1,15 @@
-// import Driver from 'https://unpkg.com/driver.js/dist/driver.esm.js';
-// import 'https://unpkg.com/driver.js/dist/driver.min.css';
-// import Driver from 'https://cdn.jsdelivr.net/npm/driver.js@1.3.1/dist/driver.esm.js';
 
-document.addEventListener("DOMContentLoaded", (e) => {
+// import { driver } from "driver.js";
+// import "driver.js/dist/driver.css";
+
+// document.addEventListener("DOMContentLoaded", (e) => {
   const meal = document.querySelector("#meal");
   const buttonSubmit = document.querySelector("#button-submit");
   const result = document.querySelector(".result");
   const mealList = document.querySelector(".meal-list");
   let genJedlo = document.querySelector("#gen-jedlo");
-  const source = document.querySelector("#sourceLink");
-  const importJSON = document.querySelector("#import-button");
+  // const source = document.querySelector("#sourceLink");
+  // const importJSON = document.querySelector("#import-button");
   const exportJSON = document.querySelector("#export-button");
   const recipeCount = document.querySelector("#recipe-count-btn");
   const allRecipeCountBtn = document.querySelector("#recipe-count-btn-master");
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   // List of meal on load
   loadRecipesFromLocalStorage();
+
 
   function showRandomRecipe() {
     if (recipes.length === 0) {
@@ -142,7 +143,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     let modal = document.createElement("div");
     modal.id = "modalWindow";
     modal.innerHTML = `<img class="recipe-image" src="${
-      recipe.image || "https://via.placeholder.com/300x200?text=No+Image"
+      recipe.image ||
+      "https://fakeimg.pl/600x200/1f1f1f/909090?text=fotka+receptu+ni+je+k+dispozicii&font=bebas&font_size=16"
     }" alt="${recipe.title}">
         <h2>${recipe.title}</h2>
         <ul class="ingredient-list-recipe-view">${ingredientsHtml}</ul>
@@ -150,11 +152,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <ol class="step-list-recipe-view">${stepsHtml}</ol>
         <p class="recipe-source-link">${
           recipe.link
-            ? `<a href="${recipe.link}" target="_blank">Link na original recept</a>`
+            ? `<a href="${recipe.link}" target="_blank">Original recept</a>`
             : ""
         }</p>
         <div class="button-container">
-        <button id="closeModalBtn">Close</button>
+        <button id="closeModalBtn">Zavri</button>
         <button id="upravitButton">Upravit</button>
         <button id="copyIngredientsBtn">Kopírovať ingrediencie</button>
         <p id="copyMessage" style="margin: 10px 0 10px 0;"></p>
@@ -243,6 +245,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         <button type="button" id="addIngredientBtn">Pridaj ingredienciu</button>
         <br>
         <label for="modal-how-textarea">Postup na pripravu:</label><br>
+        <small>Postup na pripravu po krokoch. Popiste co a ako postupovat v kazdom kroku. NIe je povinne.</small>
         <div id="stepsContainer"></div>
         <button type="button" id="addStepBtn">Pridaj krok</button>
         
@@ -333,7 +336,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     row.classList.add("step-row");
 
     row.innerHTML = `
-    <input type="text" class="step-description" placeholder="Popis kroku" value="${step.description}">
+<textarea class="step-description" placeholder="Popis kroku" rows="4" style="width: 100%; resize: true;">${step.description}</textarea>
     <button type="button" class="remove-step">X</button>
   `;
 
@@ -563,6 +566,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     // Toggle visibility of the meal list
     mealList.classList.toggle("hide");
+    searchByIngredientsBtn.classList.toggle("hide");
+    if (ingredientSearchContainer.style.display === "block") {
+      ingredientSearchContainer.style.display = "none";
+    }
 
     if (mealList.classList.contains("hide")) {
       // If the list is hidden, remove the search bar
@@ -603,6 +610,116 @@ document.addEventListener("DOMContentLoaded", (e) => {
     }
   });
 
+  // Event listener for the "Hladaj podla ingrediencii" button
+  const searchByIngredientsBtn = document.getElementById(
+    "searchByIngredientsBtn"
+  );
+  const ingredientSearchContainer = document.getElementById(
+    "ingredientSearchContainer"
+  );
+
+  searchByIngredientsBtn.addEventListener("click", () => {
+    // Toggle visibility of the ingredient search container
+    ingredientSearchContainer.style.display =
+      ingredientSearchContainer.style.display === "none" ? "block" : "none";
+
+    // Populate the ingredient interface if it's shown
+    if (ingredientSearchContainer.style.display === "block") {
+      populateIngredientInterface();
+    }
+  });
+
+  // Function to populate the ingredient search interface
+  function populateIngredientInterface() {
+    ingredientSearchContainer.innerHTML = ""; // Clear previous content
+
+    // Get a list of unique ingredients and counts, sorted by count
+    const ingredientCounts = {};
+    recipes.forEach((recipe) => {
+      recipe.ingredients.forEach((ingredient) => {
+        const name = ingredient.name ? ingredient.name.toLowerCase() : null;
+        if (name) {
+          if (ingredientCounts[name]) {
+            ingredientCounts[name]++;
+          } else {
+            ingredientCounts[name] = 1;
+          }
+        }
+      });
+    });
+
+    const sortedIngredients = Object.entries(ingredientCounts)
+      .sort((a, b) => b[1] - a[1]) // Sort by count descending
+      .map(([name, count]) => ({ name, count }));
+
+    // Create a flexbox container
+    const flexContainer = document.createElement("div");
+    flexContainer.classList.add("ingredient-flex-container");
+
+    // Populate the flexbox with ingredients
+    sortedIngredients.forEach(({ name, count }) => {
+      const ingredientItem = document.createElement("div");
+      ingredientItem.classList.add("ingredient-flex-item");
+
+      // Shorten the ingredient name if it's too long
+      const truncatedName = name.length > 15 ? name.slice(0, 15) + "..." : name;
+
+      ingredientItem.innerHTML = `
+        <input type="checkbox" class="ingredient-checkbox" value="${name}" id="checkbox-${name}" />
+        <label for="checkbox-${name}" title="${name}">${truncatedName} (${count})</label>
+      `;
+
+      flexContainer.appendChild(ingredientItem);
+    });
+
+    ingredientSearchContainer.appendChild(flexContainer);
+
+    // Add event listener for checkboxes
+    const checkboxes = document.querySelectorAll(".ingredient-checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", filterRecipesByIngredients);
+    });
+  }
+
+  // Function to filter recipes based on selected ingredients
+  function filterRecipesByIngredients() {
+    const selectedIngredients = Array.from(
+      document.querySelectorAll(".ingredient-checkbox:checked")
+    ).map((checkbox) => checkbox.value);
+
+    // Filter recipes based on selected ingredients
+    const filteredRecipes = recipes.filter((recipe) =>
+      selectedIngredients.every((ingredient) =>
+        recipe.ingredients.some(
+          (ing) =>
+            ing.name && ing.name.toLowerCase() === ingredient.toLowerCase()
+        )
+      )
+    );
+
+    // Update the recipe list with filtered results
+    const mealList = document.querySelector(".meal-list");
+    mealList.innerHTML = ""; // Clear the current list
+
+    if (filteredRecipes.length > 0) {
+      filteredRecipes.forEach((recipe) => {
+        const mealListSingleItem = document.createElement("div");
+        mealListSingleItem.classList.add("meal-list-item");
+        mealListSingleItem.textContent = recipe.title;
+
+        // Add event listener to view the recipe details
+        mealListSingleItem.addEventListener("click", () => {
+          viewRecipe(recipe.id);
+        });
+
+        mealList.appendChild(mealListSingleItem);
+      });
+    } else {
+      mealList.innerHTML =
+        "<p>Žiadne recepty nevyhovujú zvoleným ingredienciám.</p>";
+    }
+  }
+
   // const driver = window.driver.js.driver;
   // Initialize the Driver instance using the global Driver class
   const driverObj = driver({
@@ -642,4 +759,5 @@ document.addEventListener("DOMContentLoaded", (e) => {
   driverObj.drive();
 
   // driverObj.drive();
-}); //DOM content load end-------------------------
+// }); 
+//DOM content load end-------------------------
