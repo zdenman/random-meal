@@ -13,11 +13,16 @@
   const exportJSON = document.querySelector("#export-button");
   const recipeCount = document.querySelector("#recipe-count-btn");
   const allRecipeCountBtn = document.querySelector("#recipe-count-btn-master");
+  const addRecipeBtn = document.querySelector(".add-recipe-btn")
 
   // const modal = document.getElementById("openModalBtn");
   // let recipe;
   let recipeHistory = [];
   let recipes = [];
+
+  addRecipeBtn.addEventListener('click', ()=>{
+    document.querySelector("#pridaj-jedlo-form").classList.toggle("hide")
+  })
 
   // List of meal on load
   loadRecipesFromLocalStorage();
@@ -191,6 +196,7 @@
     addRecipe();
     saveRecipesToLocalStorage();
     loadRecipesFromLocalStorage();
+    document.querySelector("#pridaj-jedlo-form").classList.add("hide")
     // updateRecipeList();
     console.log(recipes);
   });
